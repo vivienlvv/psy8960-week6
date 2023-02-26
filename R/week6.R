@@ -20,6 +20,5 @@ citations_tbl = tibble(line = 1:length(citations_txt), cite = citations_txt) %>%
   mutate(page_start = str_match(cite, pattern = "(\\d+)\\-\\d+")[,2]) %>% 
   mutate(perf_ref = str_detect(cite, fixed("performance", ignore = TRUE))) %>% 
   mutate(title = str_match(cite, pattern = "\\(\\d{4}\\)\\.\\s*([A-Z][^.]*)")[,2]) %>% # Revisit
-  mutate(first_author = str_match(cite, pattern = "^(\\w+,\\s(?:[A-Z]\\.\\s*)+)[,|\\s\\(\\d{4}\\)]+")[,2])
-  # explore non-capture and char class next time
+  mutate(first_author = str_match(cite, pattern = "^([\\w|\\-]+,\\s(?:[A-Z]\\.\\s*)+)[,|\\s\\(\\d{4}\\)]+")[,2]) # explore non-capture and char class next time; first author old pattern = "^(\\w+,\\s(?:[A-Z]\\.\\s*)+)[,|\\s\\(\\d{4}\\)]+", new pattern matched additional 452 people
 sum(!is.na(citations_tbl$first_author))
