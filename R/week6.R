@@ -20,5 +20,6 @@ citations_tbl = tibble(line = 1:length(citations_txt), cite = citations_txt) %>%
   mutate(page_start = str_match(cite, pattern = "(\\d+)\\-\\d+")[,2]) %>% 
   mutate(perf_ref = str_detect(cite, fixed("performance", ignore = TRUE))) %>% 
   mutate(title = str_match(cite, pattern = "\\(\\d{4}\\)\\.\\s*([A-Z](?:\\(.*\\)|[^.])*)")[,2]) %>% # Old pattern: "\\(\\d{4}\\)\\.\\s*([A-Z][^.]*)"; still need to deal with non-period endings
-  mutate(first_author = str_match(cite, pattern = "^([\\w|\\-]+,\\s(?:[A-Z]\\.\\s*)+)[,|\\s\\(\\d{4}\\)]+")[,2]) # explore non-capture and char class next time; first author old pattern = "^(\\w+,\\s(?:[A-Z]\\.\\s*)+)[,|\\s\\(\\d{4}\\)]+", new pattern matched additional 452 people
+  mutate(first_author = str_extract(cite, pattern = "^(?:([A-Z][\\w\\-]+,\\s[A-Z\\.\\s*]+)|([A-Z][\\w\\s]+)\\.)(?=,|\\s\\(\\d{4}\\))"))  # explore non-capture and char class next time; first author old pattern = "^(\\w+,\\s(?:[A-Z]\\.\\s*)+)[,|\\s\\(\\d{4}\\)]+", new pattern matched additional 452 people; old2 = "^([\\w|\\-]+,\\s(?:[A-Z]\\.\\s*)+)[,|\\s\\(\\d{4}\\)]+"
+
 sum(!is.na(citations_tbl$first_author))
